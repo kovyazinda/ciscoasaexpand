@@ -8,7 +8,6 @@ outputfile = sys.argv[2]
 if inputfile and outputfile:
 
   print "Reading:"+inputfile
-#  print "Writing:"+outputfile
 
   infile=open(inputfile,"rU")
   outfile=open(outputfile,"w+")
@@ -30,13 +29,9 @@ if inputfile and outputfile:
 
    match = re.search("^object-group.*", string)
    if match:
-#    print preprevgroup 
-#    print prevgroup 
     for netobject in currentitem:
      netobjectvalue=netobjectvalue+netobject+","
 
-#    print currentgroup 
-#    print netobjectvalue
 
     checkproto = re.search("^.*\ (tcp|udp)",currentgroup)
     if checkproto:
@@ -56,10 +51,6 @@ if inputfile and outputfile:
    child = re.search("^\ .*object.*", string)
    if child:
     currentitem.append(re.sub(".*object\ (object|host|service|fqdn|eq)",'',child.group(0)))
-#    print currentitem
-
-#   print string
-#   outfile.write (" fqdn v4 "+domain.rstrip("\n")+"\n")
 
    acl = re.search("^access-list",string)
    remark = re.search("remark",string)
@@ -72,7 +63,6 @@ if inputfile and outputfile:
       if aclentry == dictentry:
        print ""
        aclstring[aclentryincrement-1]=(aclentry+"("+objectdict[dictentry]+")")      
-#    print aclstring
     csvrecord.writerow(aclstring)
 
     
