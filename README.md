@@ -1,7 +1,5 @@
 # syntax 
-
-python ciscoasaexpand.py <inputfile.txt> <outputfile.csv>
+python analyze-config.py <inputfile.txt> <outputfile.csv>
 
 # Installation 
-pip install re
-pip install csv
+pip install re csv
