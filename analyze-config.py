@@ -27,11 +27,15 @@ if inputfile and outputfile:
   for string in infile:
    
 
-   match = re.search("^object-group.*", string)
+   match = re.search("(^object-group.*|^object\ .*)", string)
    if match:
+#    print preprevgroup 
+#    print prevgroup 
     for netobject in currentitem:
      netobjectvalue=netobjectvalue+netobject+","
 
+#    print currentgroup 
+#    print netobjectvalue
 
     checkproto = re.search("^.*\ (tcp|udp)",currentgroup)
     if checkproto:
@@ -43,14 +47,19 @@ if inputfile and outputfile:
   
     preprevgroup=prevgroup
     prevgroup=currentgroup
-    currentgroup=re.sub("object-group\ (network|service)*\ ",'',match.group(0))
+    
+    currentgroup=re.sub("(^object-group|^object)\ (network|service)*\ ",'',match.group(0))
 
     currentitem=[]
     netobjectvalue=""
 
-   child = re.search("^\ .*object.*", string)
+   child = re.search("^\ (group-object|network-object|network-object host|service-object|port-object|subnet|service|host|fqdn v4|range|nat).*", string)
    if child:
-    currentitem.append(re.sub(".*object\ (object|host|service|fqdn|eq)",'',child.group(0)))
+    currentitem.append(re.sub("\ (group-object|network-object|network-object host|service-object|port-object|subnet|service|host|fqdn v4|range|nat)",'',child.group(0)))
+
+#    print currentitem
+
+#   print string
 
    acl = re.search("^access-list",string)
    remark = re.search("remark",string)
@@ -61,8 +70,9 @@ if inputfile and outputfile:
      aclentryincrement+=1
      for dictentry in objectdict: 
       if aclentry == dictentry:
-       print ""
+#       print ""
        aclstring[aclentryincrement-1]=(aclentry+"("+objectdict[dictentry]+")")      
+#    print aclstring
     csvrecord.writerow(aclstring)
 
     
@@ -82,4 +92,3 @@ if inputfile and outputfile:
 
   outfile.close
   infile.close
-
