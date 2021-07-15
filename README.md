@@ -7,6 +7,3 @@ python analyze-config.py <inputfile.txt> <outputfile.csv>
 # Installation 
 pip install re csv
 
-#
-If you think that it is worth to support this project: 
-BTC 34kWXwjDn1uXQRfgeehaskD1hXZu713ZWQ
