@@ -7,7 +7,7 @@ outputfile = sys.argv[2]
 
 if inputfile and outputfile:
 
-  print "Reading:"+inputfile
+  print("Reading:"+inputfile)
 
   infile=open(inputfile,"rU")
   outfile=open(outputfile,"w+")
@@ -70,9 +70,23 @@ if inputfile and outputfile:
      aclentryincrement+=1
      for dictentry in objectdict: 
       if aclentry == dictentry:
-#       print ""
-       aclstring[aclentryincrement-1]=(aclentry+"("+objectdict[dictentry]+")")      
-#    print aclstring
+# Debug
+       if ("object" in objectdict[dictentry]):
+        processed_object = objectdict[dictentry]
+        subobjects = processed_object.split(",")
+        subentry=""
+        for subobject in subobjects:
+          
+         if len(subobject.split(" "))==3:   
+          subobjectvalue = subobject.split(" ")[2]
+          subentry = subentry+subobjectvalue+" "+objectdict[subobjectvalue]+","
+        
+        print ("Debug: ", subentry)
+        aclstring[aclentryincrement-1]=(aclentry+"("+"["+subentry+"]"+")")
+       else: 
+#        print ("DebugSubobject: ",subobjects)        
+        aclstring[aclentryincrement-1]=(aclentry+"("+objectdict[dictentry]+")")
+    print (aclstring)
     csvrecord.writerow(aclstring)
 
     
