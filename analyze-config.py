@@ -12,7 +12,8 @@ if inputfile and outputfile:
   infile=open(inputfile,"rU")
   outfile=open(outputfile,"w+")
 
-  csvrecord = csv.writer(outfile, delimiter=';',quotechar='"', quoting=csv.QUOTE_MINIMAL)
+#  csvrecord = csv.writer(outfile, delimiter=';',quotechar='"', quoting=csv.QUOTE_MINIMAL)
+  csvrecord = csv.writer(outfile, dialect='excel')
 
   prevgroup = ""
   preprevgroup = ""
@@ -25,29 +26,29 @@ if inputfile and outputfile:
   objectdict = {}
 
   for string in infile:
-   
+
 
    match = re.search("(^object-group.*|^object\ .*)", string)
    if match:
-#    print preprevgroup 
-#    print prevgroup 
+#    print preprevgroup
+#    print prevgroup
     for netobject in currentitem:
      netobjectvalue=netobjectvalue+netobject+","
 
-#    print currentgroup 
+#    print currentgroup
 #    print netobjectvalue
 
     checkproto = re.search("^.*\ (tcp|udp)",currentgroup)
     if checkproto:
      serviceobject=re.sub("\ (tcp|udp)",'',checkproto.group(0))
 
-     objectdict[serviceobject]=checkproto.group(0)+netobjectvalue 
-    else: 
+     objectdict[serviceobject]=checkproto.group(0)+netobjectvalue
+    else:
      objectdict[currentgroup]=netobjectvalue
-  
+
     preprevgroup=prevgroup
     prevgroup=currentgroup
-    
+
     currentgroup=re.sub("(^object-group|^object)\ (network|service)*\ ",'',match.group(0))
 
     currentitem=[]
@@ -68,32 +69,39 @@ if inputfile and outputfile:
     aclentryincrement=0
     for aclentry in aclstring:
      aclentryincrement+=1
-     for dictentry in objectdict: 
+     for dictentry in objectdict:
       if aclentry == dictentry:
+#1234
 # Debug
        if ("object" in objectdict[dictentry]):
         processed_object = objectdict[dictentry]
         subobjects = processed_object.split(",")
         subentry=""
         for subobject in subobjects:
-          
-         if len(subobject.split(" "))==3:   
+
+         if len(subobject.split(" "))==3:
           subobjectvalue = subobject.split(" ")[2]
           subentry = subentry+subobjectvalue+" "+objectdict[subobjectvalue]+","
-        
-        print ("Debug: ", subentry)
+
+#        print ("Debug Subentry: ", subentry)
         aclstring[aclentryincrement-1]=(aclentry+"("+"["+subentry+"]"+")")
-       else: 
-#        print ("DebugSubobject: ",subobjects)        
+       else:
+#        print ("DebugSubobject: ",subobjects)
         aclstring[aclentryincrement-1]=(aclentry+"("+objectdict[dictentry]+")")
-    print (aclstring)
+#1234
+    try:
+     aclstring.remove("\n")
+    except:
+     pass
+
+    print ("ACL:",aclstring)
     csvrecord.writerow(aclstring)
 
-    
- 
+
+
 #print collected datastructure from objects
 #  print objectdict
-  
+
   rulerow=[]
   rulerow.append("")
   csvrecord.writerow(rulerow)
