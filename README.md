@@ -1,9 +1,9 @@
 # Description
 This tool performs expansion of Cisco ASA / FTD / FMC objects in ACL to simplify analysys of configuration files
 
-# Syntax 
-python analyze-config.py <inputfile.txt> <outputfile.csv>
+# Usage
+copy configs in *.txt format to same directory and launch script
 
 # Installation 
-pip install re csv
+Requires only python 3.x. Libraries re, csv, os, system are installed by default
 
