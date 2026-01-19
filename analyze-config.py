@@ -1,16 +1,22 @@
 import sys
 import re
 import csv
+import os
 
-inputfile = sys.argv[1]
-outputfile = sys.argv[2]
+files_only = [f for f in os.listdir('.') if os.path.isfile(os.path.join('.', f))]
+#print("Files only:", files_only)
 
-if inputfile and outputfile:
+for fileitem in files_only:
+ if (".txt" in fileitem):
+  inputfile = fileitem
+  outputfile = fileitem[:-4]+".csv"
+# debug
+  print ("Source:",inputfile, "Destination:", outputfile)
 
   print("Reading:"+inputfile)
 
-  infile=open(inputfile,"rU")
-  outfile=open(outputfile,"w+")
+  infile=open(inputfile,"r")
+  outfile=open(outputfile,"w",newline='', encoding='utf-8')
 
 #  csvrecord = csv.writer(outfile, delimiter=';',quotechar='"', quoting=csv.QUOTE_MINIMAL)
   csvrecord = csv.writer(outfile, dialect='excel')
@@ -88,13 +94,13 @@ if inputfile and outputfile:
        else:
 #        print ("DebugSubobject: ",subobjects)
         aclstring[aclentryincrement-1]=(aclentry+"("+objectdict[dictentry]+")")
-#1234
+
     try:
      aclstring.remove("\n")
     except:
      pass
 
-    print ("ACL:",aclstring)
+#    print ("ACL:",aclstring)
     csvrecord.writerow(aclstring)
 
 
